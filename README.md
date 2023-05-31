@@ -14,6 +14,10 @@ All computation is performed using the onboard GPU.
 ## Data Preperation
 ---
 ## Training
+```python
+nemo_model = NemoTrainer()
+nemo_model.train()
+```
 ---
 ## Export Onnx Model
 ---
