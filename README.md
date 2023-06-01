@@ -20,6 +20,7 @@ All computation is performed using the onboard GPU.
 - [Export Onnx Model](#Export-Onnx-Model)
 - [Onnxruntime Inference](#Onnxruntime-Inference)
 - [TensorRT Inference](#TensorRT-Inference)
+- [References](#References)
 ---
 ## Data Preperation
 - To convert to the format of the model data, use the `import_datasets.py` utility, which implements the conversion for the Assistant dataset `assistant_utils.py`. 
@@ -85,6 +86,12 @@ trt_nemo = IntentSlotClassificationTRTInference()
 query = ['iki kişilik türk kahvesi yap']
 trt_nemo.inference(query)
 ```
+---
+## References
+
+- [joint_intent_slot nvidia document](https://docs.nvidia.com/deeplearning/nemo/user-guide/docs/en/stable/nlp/joint_intent_slot.html)
+- [Joint_Intent_and_Slot_Classification.ipynb](https://github.com/NVIDIA/NeMo/blob/main/tutorials/nlp/Joint_Intent_and_Slot_Classification.ipynb)
+- [jetson-voice intent_slot.py](https://github.com/dusty-nv/jetson-voice/blob/master/jetson_voice/models/nlp/intent_slot.py)
 
 
 
