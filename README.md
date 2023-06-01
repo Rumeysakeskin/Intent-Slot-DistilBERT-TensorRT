@@ -4,6 +4,14 @@ Joint Intent/Slot Classification for Jetson Nano, TX1/TX2, Xavier NX, and AGX Xa
 The Joint Intent/Slot Classification was trained with NeMo and deployed with both onnxruntime and TensorRT for optimized performance.
 All computation is performed using the onboard GPU.
 
+### Benchmark Performance Between Execution Providers
+
+| *Execution Provider* |*Inference Time* |
+|:----------------:|:----------------:|
+| onnxruntime      | 0.63685 sec      |
+| onnx-tensorrt    | 0.00375 sec      |
+
+
 ## Table Of Contents
 - [Data Preperation](#Data-Preperation)
 - [Training](#Training)
