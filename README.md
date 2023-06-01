@@ -11,6 +11,8 @@ All computation is performed using the onboard GPU.
 | onnxruntime      | 0.63685 sec      |
 | onnx-tensorrt    | 0.00375 sec      |
 
+*Performances are evaluated on NVIDIA A100 80 GB. Speeds vary by device.*
+
 
 ## Table Of Contents
 - [Data Preperation](#Data-Preperation)
