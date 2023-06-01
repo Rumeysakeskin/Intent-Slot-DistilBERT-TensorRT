@@ -3,7 +3,7 @@
 The Joint Intent/Slot Classification was trained with NeMo and deployed with both onnxruntime and TensorRT for optimized performance.
 All computation is performed using the onboard GPU.
 
-### Benchmark Performance Between Execution Providers
+### *Benchmark Performance Between Execution Providers*
 
 | *Execution Provider* |*Inference Time* |
 |:----------------:|:----------------:|
