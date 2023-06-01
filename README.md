@@ -29,7 +29,7 @@ answerid;scenario;intent;answer_annotation;answer_from_anno;answer_from_user
 python import_datasets.py --dataset_name=assistant --source_data_dir=dataset --target_data_dir=nemo_format
 ```
 
-After conversion, target data directory should contain the following files:
+- After conversion, target data directory should contain the following files:
 ```python
 |--nemo_format/
   |-- dict.intents.csv
