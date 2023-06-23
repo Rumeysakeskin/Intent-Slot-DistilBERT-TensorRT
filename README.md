@@ -39,8 +39,21 @@ python import_datasets.py --dataset_name=assistant --source_data_dir=dataset --t
 ```
 
 ---
-Open the `distelbert_train_export_onnx.ipynb` run the following for training.
+Hyper-parameters | Values | 
+ ------- | ------- | 
+Pretrained BERT Model| distilbert-base-uncased |
+Optimizer| Adam |
+LR Schedule| WarmupAnnealing |
+Precision| 16 |
+AMP Level| O1 |
+Batch Size| 32 |
+Max seq lenght| 50 |
+#of train/test samples| 5000/1600 |
+
+---
+
 ## Training
+Open the `distelbert_train_export_onnx.ipynb` run the following for training.
 ```python
 !(python intent_slot_classification_jetson.py \
   --dataset='./nemo_format/' \
