@@ -1,2 +1,2 @@
 answerid;scenario;intent;answer_annotation;answer_from_anno;answer_from_user
-1001;coffee_machine;brewing_query;"[amount_per_person : dört] kişilik [coffee_type : filtre kahve] demle";"dört kişilik filtre kahve demle";"4 kişilik filtre kahve demle"
+1001;coffee_machine;brewing_query;"I will take [amount_per_person : two] [content : slightly sweet] [coffee_type : turkish coffee]";"I will take two slightly sweet Turkish coffee";"I will take 2 slightly sweet Turkish coffee"
