@@ -1,24 +1,12 @@
 ## Joint Intent/Slot Classification for Jetson Nano, TX1/TX2, Xavier NX, and AGX Xavier with Onnxruntime and Onnx-TensorRT
 
-The Joint Intent/Slot Classification was trained with NeMo and deployed with both onnxruntime and TensorRT for optimized performance.
+The Joint Intent/Slot Classification was trained with NeMo and deployed with TensorRT for optimized performance.
 All computation is performed using the onboard GPU.
-
-### *Benchmark Performance Between Execution Providers*
-
-| *Execution Provider* |*Inference Time* |
-|:----------------:|:----------------:|
-| onnxruntime      | 0.63685 sec      |
-| onnx-tensorrt    | 0.00375 sec      |
-
-*Performances are evaluated on NVIDIA A100 80 GB. Speeds vary by device.*
-
 
 ## Table Of Contents
 - [Data Preperation](#Data-Preperation)
 - [Training](#Training)
-- [Evaluation](#Evaluation)
 - [Export Onnx Model](#Export-Onnx-Model)
-- [Onnxruntime Inference](#Onnxruntime-Inference)
 - [TensorRT Inference](#TensorRT-Inference)
 - [References](#References)
 ---
@@ -30,7 +18,7 @@ Use one line per query, with brackets to define slot names. This is very similar
 
 ```python
 answerid;scenario;intent;answer_annotation;answer_from_anno;answer_from_user
-1001;coffee_machine;brewing_query;"[amount_per_person : dört] kişilik [coffee_type : filtre kahve] demle";"dört kişilik filtre kahve demle";"4 kişilik filtre kahve demle"
+1001;coffee_machine;brewing_query;"I will take [amount_per_person : two] [content : slightly sweet] [coffee_type : turkish coffee]";"I will take two slightly sweet Turkish coffee";"I will take 2 slightly sweet Turkish coffee"
 ```
 
 - Open the `prepare_dataset.ipynb` and run the following command for dataset conversion.
@@ -51,40 +39,49 @@ python import_datasets.py --dataset_name=assistant --source_data_dir=dataset --t
 ```
 
 ---
-Open the `nemo-trainer-onnx-tensorrt.ipynb` for the next steps below.
+Open the `distelbert_train_export_onnx.ipynb` run the following for training.
 ## Training
 ```python
-nemo_model = NemoTrainer()
-nemo_model.train()
-```
----
-## Evaluation
-```python
-nemo_model.test()
+!(python intent_slot_classification_jetson.py \
+  --dataset='./nemo_format/' \
+  --config='confing/intent_slot_jetson.yaml' \
+  --exp-dir='./nemo_experiments_jetson'\
+  --model='distilbert-base-uncased' \
+  --epochs=10)
 ```
 ---
 ## Export Onnx Model
 ```python
-nemo_checkpoint_path = "/nemo_experiments/IntentSlot/2023-05-29_10-51-01/checkpoints/"
-onnx_filename = "turkish_isc.onnx"
-nemo_model.export_model(nemo_checkpoint_path, onnx_filename)
-```
----
-## Onnxruntime Inference
-```python
-intent_slot_label_path = "/nemo_format/"
-nemo_checkpoint_path= "/nemo_experiments/IntentSlot/2023-05-29_10-51-01/checkpoints/"
-onnx_model = "turkish_isc.onnx"
-query = ['iki kişilik türk kahvesi yap']
-
-nemo_model.inference(query, nemo_checkpoint_path, onnx_model, intent_slot_label_path)
+nemo_checkpoint_path = "./nemo_experiments_jetson/IntentSlot/2023-06-21_10-57-00/checkpoints/epoch=9-step=2930.ckpt" #ENGLISH
+onnx_filename = "ENGLISH_nemo_model_DISTEL_BERT.onnx"
+export_model(nemo_checkpoint_path, onnx_filename)
 ```
 ---
 ## TensorRT Inference
 ```python
-trt_nemo = IntentSlotClassificationTRTInference()
-query = ['iki kişilik türk kahvesi yap']
-trt_nemo.inference(query)
+en_inference_model = ENNemoDialogueInferencerTRT()
+query = "please prepare two sweet filter coffee with milk"
+
+intent, intent_score, merged_data, inference_time = en_inference_model.inference(query)
+print(f"\nQuery: \033[1m{query}\033[0m\n")
+print(f"Predicted Intent: \033[1m{intent} (Score: {intent_score:.4f}\033[0m)\n")
+print("Predicted Slot(s):")
+for slot, values in merged_data.items():
+    print(f"\033[1m{slot} --> {' '.join(values['text'])} (Score: {values['score']:.4f}\033[0m)")
+print(f"\nInference time: \033[1m{inference_time:.4f} sec\033[0m")
+```
+
+```python
+Query: please prepare two sweet filter coffee with milk
+
+Predicted Intent: coffee_machine_brewing_query (Score: 0.9904)
+
+Predicted Slot(s):
+amount_per_person --> two (Score: 0.6788)
+content --> sweet with milk (Score: 0.9168)
+coffee_type --> filter coffee (Score: 0.9348)
+
+Inference time: 0.0100 sec
 ```
 ---
 ## References
