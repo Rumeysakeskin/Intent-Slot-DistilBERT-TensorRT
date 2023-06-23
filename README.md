@@ -58,21 +58,17 @@ export_model(nemo_checkpoint_path, onnx_filename)
 ```
 ---
 ## TensorRT Inference
+Open the `dintent_slot_distelbert_inference_tensorrt.ipynb` and run the following for inference.
+
 ```python
 en_inference_model = ENNemoDialogueInferencerTRT()
-query = "please prepare two sweet filter coffee with milk"
+query = "Please prepare two sweet filter coffee with milk"
 
 intent, intent_score, merged_data, inference_time = en_inference_model.inference(query)
-print(f"\nQuery: \033[1m{query}\033[0m\n")
-print(f"Predicted Intent: \033[1m{intent} (Score: {intent_score:.4f}\033[0m)\n")
-print("Predicted Slot(s):")
-for slot, values in merged_data.items():
-    print(f"\033[1m{slot} --> {' '.join(values['text'])} (Score: {values['score']:.4f}\033[0m)")
-print(f"\nInference time: \033[1m{inference_time:.4f} sec\033[0m")
 ```
 
 ```python
-Query: please prepare two sweet filter coffee with milk
+Query: Please prepare two sweet filter coffee with milk
 
 Predicted Intent: coffee_machine_brewing_query (Score: 0.9904)
 
@@ -85,9 +81,7 @@ Inference time: 0.0100 sec
 ```
 ---
 ## References
-
-- [joint_intent_slot nvidia document](https://docs.nvidia.com/deeplearning/nemo/user-guide/docs/en/stable/nlp/joint_intent_slot.html)
-- [Joint_Intent_and_Slot_Classification.ipynb](https://github.com/NVIDIA/NeMo/blob/main/tutorials/nlp/Joint_Intent_and_Slot_Classification.ipynb)
+- [nemo_train_intent.py](https://github.com/dusty-nv/jetson-voice/blob/master/scripts/nemo_train_intent.py)
 - [jetson-voice intent_slot.py](https://github.com/dusty-nv/jetson-voice/blob/master/jetson_voice/models/nlp/intent_slot.py)
 
 
